@@ -2,6 +2,5 @@
 
 export(getPurpleairApiHistoryV2)
 export(getPurpleairSensors)
-import(dplyr)
 import(httr)
 import(jsonlite)
