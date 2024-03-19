@@ -87,7 +87,7 @@ getPurpleairApiHistoryV2 <- function(
   # For each sensor
   for (i in 1:n) {
     sensor <- unique_sensors[i]
-    if (print_flag) {
+    if (printFlag) {
       print(paste("sensor ", sensor, ": ", i, " of ", n))
     }
     url_base <- paste0("https://api.purpleair.com/v1/sensors/",
