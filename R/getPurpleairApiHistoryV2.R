@@ -30,7 +30,10 @@ getPurpleairApiHistoryV2 <- function(
     suppressPackageStartupMessages({
       if (!require(package)) {
         stop(paste("Package", package, "not installed. Please install it before running this script."))
+      }
     })
+  }
+
 
   # Define required parameters
   required_params <- c("sensorIndex", "apiReadKey", "startTimeStamp", "endTimeStamp", "average", "fields")
