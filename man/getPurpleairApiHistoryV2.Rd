@@ -7,8 +7,8 @@
 getPurpleairApiHistoryV2(
   sensorIndex = NULL,
   apiReadKey = NULL,
-  startTimeStamp = NULL,
-  endTimeStamp = NULL,
+  startDate = NULL,
+  endDate = NULL,
   average = NULL,
   fields = NULL
 )
@@ -18,19 +18,22 @@ getPurpleairApiHistoryV2(
 
 \item{apiReadKey}{PurpleAir API read key with access to historical data.}
 
-\item{startTimeStamp}{The beginning date in the format "YYYY-MM-DD HH:mm:ss".}
+\item{startDate}{The beginning date in the format "YYYY-MM-DD".}
 
-\item{endTimeStamp}{The end date in the format "YYYY-MM-DD" HH:mm:ss.}
+\item{endDate}{The end date in the format "YYYY-MM-DD".}
 
-\item{average}{The desired average in minutes, one of the following: "0" (real-time), "10", "30", "60", "360" (6 hour), "1440" (1 day).}
+\item{average}{The desired average in minutes, one of the following:
+"0" (real-time), "10", "30", "60", "360" (6 hour), "1440" (1 day).}
 
-\item{fields}{The "Fields" parameter specifies which 'sensor data fields' to include in the response. See: https://community.purpleair.com/t/api-history-fields-descriptions/}
+\item{fields}{The "Fields" parameter specifies which 'sensor data fields' to
+include in the response.
+See: https://community.purpleair.com/t/api-history-fields-descriptions/}
 }
 \value{
-Dataframe of PurpleAir history data of a single sensor or multiple sensors.
+Dataframe of PurpleAir history data of one or multiple sensors.
 }
 \description{
-R function to download historical data from PurpleAir sensors in the newer API.
+R function to download historical data from PurpleAir sensors from API.
 Adapted from the getPurpleairApiHistory function
 Source: https://github.com/willianflores/getPurpleairApiHistory
 }

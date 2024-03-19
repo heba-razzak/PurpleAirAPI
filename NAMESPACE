@@ -2,8 +2,5 @@
 
 export(getPurpleairApiHistoryV2)
 export(getPurpleairSensors)
-import(httpcode)
 import(httr)
 import(jsonlite)
-import(lubridate)
-import(tidyverse)

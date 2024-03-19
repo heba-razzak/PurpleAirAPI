@@ -1,35 +1,36 @@
 #' getPurpleairApiHistoryV2
 #'
-#' R function to download historical data from PurpleAir sensors in the newer API.
+#' R function to download historical data from PurpleAir sensors from API.
 #' Adapted from the getPurpleairApiHistory function
 #' Source: https://github.com/willianflores/getPurpleairApiHistory
 #'
 #' @param sensorIndex PurpleAir sensor’s index.
 #' @param apiReadKey PurpleAir API read key with access to historical data.
-#' @param startTimeStamp The beginning date in the format "YYYY-MM-DD HH:mm:ss".
-#' @param endTimeStamp The end date in the format "YYYY-MM-DD" HH:mm:ss.
-#' @param average The desired average in minutes, one of the following: "0" (real-time), "10", "30", "60", "360" (6 hour), "1440" (1 day).
-#' @param fields The "Fields" parameter specifies which 'sensor data fields' to include in the response. See: https://community.purpleair.com/t/api-history-fields-descriptions/
+#' @param startDate The beginning date in the format "YYYY-MM-DD".
+#' @param endDate The end date in the format "YYYY-MM-DD".
+#' @param average The desired average in minutes, one of the following:
+#' "0" (real-time), "10", "30", "60", "360" (6 hour), "1440" (1 day).
+#' @param fields The "Fields" parameter specifies which 'sensor data fields' to
+#' include in the response.
+#' See: https://community.purpleair.com/t/api-history-fields-descriptions/
 #'
-#' @return Dataframe of PurpleAir history data of a single sensor or multiple sensors.
+#' @return Dataframe of PurpleAir history data of one or multiple sensors.
 #'
 #' @import httr
 #' @import jsonlite
-#' @import tidyverse
-#' @import lubridate
-#' @import httpcode
 #' @export
 #'
 getPurpleairApiHistoryV2 <- function(
-    sensorIndex=NULL,
-    apiReadKey=NULL,
-    startTimeStamp=NULL,
-    endTimeStamp=NULL,
+    sensorIndex = NULL,
+    apiReadKey = NULL,
+    startDate = NULL,
+    endDate = NULL,
     average = NULL,
     fields = NULL
 ) {
   # Define required parameters
-  required_params <- c("sensorIndex", "apiReadKey", "startTimeStamp", "endTimeStamp", "average", "fields")
+  required_params <- c("sensorIndex", "apiReadKey", "startDate", "endDate",
+                       "average", "fields")
 
   # Loop through each parameter and check if it is NULL
   for (param in required_params) {
@@ -39,128 +40,114 @@ getPurpleairApiHistoryV2 <- function(
   }
 
   # Convert to POSIXct
-  startTimeStamp <- as.POSIXct(startTimeStamp, tz="UTC")
-  endTimeStamp <- as.POSIXct(endTimeStamp, tz="UTC")
+  start_time <- as.POSIXct(startDate, tz = "UTC")
+  end_time <- as.POSIXct(format(endDate, "%Y-%m-%d 23:59:59"), tz = "UTC")
 
   # Calculate time difference
-  t_dif <- endTimeStamp - startTimeStamp
+  t_dif <- end_time - start_time
 
-  if (t_dif <= as.difftime(2, units = 'weeks')) {
-    start_timestamps <- startTimeStamp
-    end_timestamps <- endTimeStamp
+  # Check if time period is less than 2 weeks
+  if (t_dif <= as.difftime(2, units = "weeks")) {
+    start_timestamps <- start_time
+    end_timestamps <- end_time
   } else {
-    # If the difference is more than 2 weeks, make a sequence
-    start_timestamps <- seq(from=startTimeStamp, to=endTimeStamp, by="2 weeks")
-    end_timestamps <- seq(from=startTimeStamp + as.difftime(2, units = 'weeks') - as.difftime(1, units = 'secs'),
-                          to=endTimeStamp, by="2 weeks")
+    # If time period is greater than 2 weeks, make a sequence
+    # start_timestamps will be every 2 weeks
+    # end_timestamps will follow start_timestamps by 2 weeks - 1 sec until end
+    start_timestamps <- seq(from = start_time, to = end_time, by = "2 weeks")
+    end_timestamps <- seq(from = start_time + as.difftime(2, units = "weeks")
+                          - as.difftime(1, units = "secs"),
+                          to = end_time, by = "2 weeks")
 
-    if(length(start_timestamps) != length(end_timestamps)) {
-      end_timestamps <- c(end_timestamps, endTimeStamp)
+    # If last end timestamp from sequence is not the same as end_time,
+    # add end_time to the sequence
+    if (end_timestamps[-1] != end_time) {
+      end_timestamps <- c(end_timestamps, end_time)
     }
   }
 
-  # Convert string average to numeric
-  average_num <- as.numeric(average)
-
   # Validate average
+  average_num <- as.numeric(average)
   if (!average_num %in% c(10, 30, 60, 360, 1440)) {
-    stop(paste("Unsupported average value:", average, "\nAverage value must be 10, 30, 60, 360, 1440"))
+    stop(paste("Unsupported average value:", average,
+               "\nAverage value must be 10, 30, 60, 360, 1440"))
   }
-
-  # Compute difference of average value
-  dif <- as.difftime(average_num, units = 'mins')
-
-  # Convert timestamps once
-  start_time <- lubridate::parse_date_time(format(as.POSIXct(startTimeStamp), "%b %d %Y %H:%M:%S"), tz="UTC", orders = "b d Y H:M:S")
-  end_time <- lubridate::parse_date_time(format(as.POSIXct(endTimeStamp), "%b %d %Y %H:%M:%S"), tz="UTC", orders = "b d Y H:M:S")
-
-  # Generate sequence and create data frame of timestamps
-  other_df <- data.frame(time_stamp = seq(from = start_time, to = end_time, by = dif))
 
   # Loop for multiples requests in PurpleAir API
 
-    # dataframe that will contain our data
-    r <- data.frame()
+  # Initialize dataframe that will contain results
+  r <- data.frame()
 
-    # number of sensors
-    n <- length(sensorIndex)
+  # List of unique sensors
+  unique_sensors <- unique(sensorIndex)
+  n <- length(unique_sensors)
 
-    for (i in 1:n) {
-      sensor <- sensorIndex[i]
-      print(paste('sensor ',sensor,': ',i,' of ',n))
-      URLbase <- paste0('https://api.purpleair.com/v1/sensors/',sensor, '/history')
+  # For each sensor
+  for (i in 1:n) {
+    sensor <- unique_sensors[i]
+    print(paste("sensor ", sensor, ": ", i, " of ", n))
+    url_base <- paste0("https://api.purpleair.com/v1/sensors/",
+                      sensor, "/history")
 
-      for (j in 1:length(start_timestamps)) {
-        # Set variables
-        queryList = list(
-          start_timestamp = as.character(as.integer(as.POSIXct(start_timestamps[j], tz="UTC"))),
-          end_timestamp = as.character(as.integer(as.POSIXct(end_timestamps[j], tz="UTC"))),
-          average = average,
-          fields = fields)
+    # Download in 2 week intervals
+    for (j in 1:length(start_timestamps)) {
+      # Set variables
+      query_list <- list(
+        start_timestamp = as.character(as.integer(as.POSIXct(start_timestamps[j],
+                                                             tz = "UTC"))),
+        end_timestamp = as.character(as.integer(as.POSIXct(end_timestamps[j],
+                                                           tz = "UTC"))),
+        average = average,
+        fields = fields)
 
-        # GET PurpleAir sensor history data
-        r_temp <- httr::GET(
-          URLbase,
-          query = queryList,
-          config = add_headers("X-API-Key" = apiReadKey)
-        )
+      # GET PurpleAir sensor history data
+      result <- httr::GET(
+        url_base,
+        query = query_list,
+        config = add_headers("X-API-Key" = apiReadKey)
+      )
 
-        # Error response
-        if ( httr::http_error(r_temp) ) {  # web service failed to respond
-          status_code <- httr::status_code(r_temp)
-          err_msg <- sprintf(
-            "web service error %s from:\n  %s\n\n%s",
-            status_code,
-            URLbase,
-            httpcode::http_code(status_code)$explanation
-          )
-          stop(err_msg)
+      # Check if request was successful
+      if (httr::http_error(result)) {
+        stop("HTTP request failed.")
+      }
 
-        }
+      # Convert the raw content returned by the API into a character string
+      raw <- httr::content(result, as = "text", encoding = "UTF-8")
+      # Convert the character string into a JSON object
+      response_list <- jsonlite::fromJSON(raw)
 
-        # Structurized data in form of R vectors and lists
-        r_parsed <- fromJSON(content(r_temp, as="text"))
+      # Extract "data" element from JSON object, convert it to data frame
+      r_dataframe <- as.data.frame(response_list$data)
 
-        # Data frame from JSON data
-        r_dataframe <- as.data.frame(r_parsed$data)
+      # If dataframe is not empty
+      if (nrow(r_dataframe) > 0) {
+        # Column names
+        names(r_dataframe) <- response_list$fields
 
-        if (nrow(r_dataframe) == 0) {
-          r_dataframe <- data.frame(matrix(ncol = length(r_parsed$fields), nrow = 1))
-          names(r_dataframe) <- r_parsed$fields
-          r_dataframe$time_stamp <- as.character(as.integer(as.POSIXct(start_timestamps[j], tz="UTC")))
-        }else{
-          names(r_dataframe) <- r_parsed$fields
-        }
-
-        # Convert datetime format
-        r_dataframe$time_stamp <- as.POSIXct(as.integer(r_dataframe$time_stamp), origin="1970-01-01", tz="UTC")
-
-        # Fill missing dates
-        if (average != "0") {
-          other_df$time_stamp <- as.POSIXct(other_df$time_stamp)
-          r_dataframe <- suppressMessages(dplyr::full_join(other_df, r_dataframe))
+        # Convert epoch to datetime format
+        r_dataframe$time_stamp <- as.POSIXct(as.integer(r_dataframe$time_stamp),
+                                             origin = "1970-01-01", tz = "UTC")
 
         # Order by date
-        r_dataframe <- r_dataframe[order(r_dataframe$time_stamp),]
+        r_dataframe <- r_dataframe[order(r_dataframe$time_stamp), ]
 
         # Add sensor_id
         r_dataframe$sensor_id <- sensor
+      }
 
-        # Add to the result data frame
-        r <- rbind(r, r_dataframe)
-
-        }
+      # Add to the result data frame
+      r <- rbind(r, r_dataframe)
       }
     }
 
-    # colNames of fields
-    colNames <- strsplit(fields, ", ")[[1]]
+  # col_names of fields
+  col_names <- strsplit(fields, ", ")[[1]]
 
-    # drop rows where "fields" are empty
-    r <- r[complete.cases(r[, colNames]), ]
+  # drop rows where "fields" are empty
+  r <- r[complete.cases(r[, col_names]), ]
 
   return(r)
-
 }
 
 #' Get PurpleAir Sensor Data
@@ -168,48 +155,54 @@ getPurpleairApiHistoryV2 <- function(
 #' Retrieves data from PurpleAir sensors based on specified fields.
 #'
 #' @param apiReadKey API key for accessing the PurpleAir API.
-#' @param fields Vector specifying the fields to retrieve from the PurpleAir API.
-#'               Defaults to c("latitude", "longitude", "date_created", "last_seen").
+#' @param fields Vector specifying the fields to retrieve from PurpleAir API.
+#'               Default: c("latitude", "longitude",
+#'                           "date_created", "last_seen")
 #'
 #' @return A data frame containing the required fields for all purpleair sensors
 #' @import httr
 #' @import jsonlite
-#' @import tidyverse
-#' @import lubridate
-#' @import httpcode
 #' @export
 #'
 #' @examples
 #' getPurpleairSensors()
-#' getPurpleairSensors(apiReadKey = "your_api_key", fields = c("latitude", "longitude"))
+#' getPurpleairSensors(apiReadKey = "your_api_key",
+#'                     fields = c("latitude", "longitude"))
 getPurpleairSensors <- function(
-    apiReadKey=NULL,
+    apiReadKey = NULL,
     fields = c("latitude", "longitude", "date_created", "last_seen")
 ) {
-  # Define the header for the HTTP request to the API, including the API key and Accept content type
-  header <- c(
-    'X-API-Key' = auth_key,
-    'Accept' = "application/json"
-  )
-
-  api_endpoint <- paste0("https://api.purpleair.com/v1/sensors?fields=", paste(fields, collapse = "%2C"))
+  api_endpoint <- paste0("https://api.purpleair.com/v1/sensors?fields=",
+                         paste(fields, collapse = "%2C"))
 
   # Get Purple Air data using the following steps
-  # Make the HTTP request to the PurpleAir API using the GET function from the httr library
+  # Make the HTTP request to the PurpleAir API using the GET function
+  result <- httr::GET(
+    api_endpoint,
+    config = add_headers("X-API-Key" = apiReadKey)
+  )
+
+  # Check if request was successful
+  if (httr::http_error(result)) {
+    stop("HTTP request failed.")
+  }
+
   # Convert the raw content returned by the API into a character string
+  raw <- httr::content(result, as = "text", encoding = "UTF-8")
+
   # Convert the character string into a JSON object
-  # Extract the "data" element from the JSON object and convert it to a data frame
-  result <- GET(all, add_headers(header))
-  raw <- rawToChar(result$content)
   response_list <- jsonlite::fromJSON(raw)
+
+  # Extract "data" element from JSON object and convert it to data frame
   purpleair <- as.data.frame(response_list$data)
-  colnames(purpleair) <- response_list$fields
+  names(purpleair) <- response_list$fields
 
   # Convert date columns to Date format if they exist
   date_cols <- c("date_created", "last_seen")
   for (col in date_cols) {
-    if (col %in% colnames(purpleair)) {
-      purpleair[[col]] <- as.Date(as.POSIXct(purpleair[[col]], origin = "1970-01-01"))
+    if (col %in% names(purpleair)) {
+      purpleair[[col]] <- as.Date(as.POSIXct(purpleair[[col]],
+                                             origin = "1970-01-01"))
     }
   }
 
