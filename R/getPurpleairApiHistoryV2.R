@@ -162,3 +162,56 @@ getPurpleairApiHistoryV2 <- function(
   return(r)
 
 }
+
+#' Get PurpleAir Sensor Data
+#'
+#' Retrieves data from PurpleAir sensors based on specified fields.
+#'
+#' @param apiReadKey API key for accessing the PurpleAir API.
+#' @param fields Vector specifying the fields to retrieve from the PurpleAir API.
+#'               Defaults to c("latitude", "longitude", "date_created", "last_seen").
+#'
+#' @return A data frame containing the required fields for all purpleair sensors
+#' @import httr
+#' @import jsonlite
+#' @import tidyverse
+#' @import lubridate
+#' @import httpcode
+#' @export
+#'
+#' @examples
+#' getPurpleairSensors()
+#' getPurpleairSensors(apiReadKey = "your_api_key", fields = c("latitude", "longitude"))
+getPurpleairSensors <- function(
+    apiReadKey=NULL,
+    fields = c("latitude", "longitude", "date_created", "last_seen")
+) {
+  # Define the header for the HTTP request to the API, including the API key and Accept content type
+  header <- c(
+    'X-API-Key' = auth_key,
+    'Accept' = "application/json"
+  )
+
+  api_endpoint <- paste0("https://api.purpleair.com/v1/sensors?fields=", paste(fields, collapse = "%2C"))
+
+  # Get Purple Air data using the following steps
+  # Make the HTTP request to the PurpleAir API using the GET function from the httr library
+  # Convert the raw content returned by the API into a character string
+  # Convert the character string into a JSON object
+  # Extract the "data" element from the JSON object and convert it to a data frame
+  result <- GET(all, add_headers(header))
+  raw <- rawToChar(result$content)
+  response_list <- jsonlite::fromJSON(raw)
+  purpleair <- as.data.frame(response_list$data)
+  colnames(purpleair) <- response_list$fields
+
+  # Convert date columns to Date format if they exist
+  date_cols <- c("date_created", "last_seen")
+  for (col in date_cols) {
+    if (col %in% colnames(purpleair)) {
+      purpleair[[col]] <- as.Date(as.POSIXct(purpleair[[col]], origin = "1970-01-01"))
+    }
+  }
+
+  return(purpleair)
+}
