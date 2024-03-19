@@ -118,26 +118,28 @@ getPurpleairApiHistoryV2 <- function(
       response_list <- jsonlite::fromJSON(raw)
 
       # Extract "data" element from JSON object, convert it to data frame
-      r_dataframe <- as.data.frame(response_list$data)
+      r_df <- as.data.frame(response_list$data)
 
       # If dataframe is not empty
-      if (nrow(r_dataframe) > 0) {
+      if (nrow(r_df) > 0) {
         # Column names
-        names(r_dataframe) <- response_list$fields
+        names(r_df) <- response_list$fields
 
         # Convert epoch to datetime format
-        r_dataframe$time_stamp <- as.POSIXct(as.integer(r_dataframe$time_stamp),
-                                             origin = "1970-01-01", tz = "UTC")
+        r_df$time_stamp <- format(as.POSIXct(as.integer(r_df$time_stamp),
+                                                    origin = "1970-01-01",
+                                                    tz = "UTC"),
+                                         format = "%Y-%m-%d %H:%M:%S")
 
         # Order by date
-        r_dataframe <- r_dataframe[order(r_dataframe$time_stamp), ]
+        r_df <- r_df[order(r_df$time_stamp), ]
 
         # Add sensor_id
-        r_dataframe$sensor_id <- sensor
+        r_df$sensor_id <- sensor
       }
 
       # Add to the result data frame
-      r <- rbind(r, r_dataframe)
+      r <- rbind(r, r_df)
       }
     }
 
