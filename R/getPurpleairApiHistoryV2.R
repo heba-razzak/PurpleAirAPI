@@ -141,11 +141,13 @@ getPurpleairApiHistoryV2 <- function(
       }
     }
 
-  # col_names of fields
-  col_names <- strsplit(fields, ", ")[[1]]
+  if (nrow(r) > 0) {
+    # col_names of fields
+    col_names <- strsplit(fields, ", ")[[1]]
 
-  # drop rows where "fields" are empty
-  r <- r[complete.cases(r[, col_names]), ]
+    # drop rows where "fields" are empty
+    r <- r[complete.cases(r[, col_names]), ]
+  }
 
   return(r)
 }
