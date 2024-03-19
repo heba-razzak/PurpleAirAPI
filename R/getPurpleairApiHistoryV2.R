@@ -13,6 +13,7 @@
 #' @param fields The "Fields" parameter specifies which 'sensor data fields' to
 #' include in the response.
 #' See: https://community.purpleair.com/t/api-history-fields-descriptions/
+#' @param printFlag Logical. Indicates whether to print progress messages.
 #'
 #' @return Dataframe of PurpleAir history data of one or multiple sensors.
 #'
@@ -26,7 +27,8 @@ getPurpleairApiHistoryV2 <- function(
     startDate = NULL,
     endDate = NULL,
     average = NULL,
-    fields = NULL
+    fields = NULL,
+    printFlag = FALSE
 ) {
   # Define required parameters
   required_params <- c("sensorIndex", "apiReadKey", "startDate", "endDate",
@@ -85,7 +87,9 @@ getPurpleairApiHistoryV2 <- function(
   # For each sensor
   for (i in 1:n) {
     sensor <- unique_sensors[i]
-    print(paste("sensor ", sensor, ": ", i, " of ", n))
+    if (print_flag) {
+      print(paste("sensor ", sensor, ": ", i, " of ", n))
+    }
     url_base <- paste0("https://api.purpleair.com/v1/sensors/",
                       sensor, "/history")
 

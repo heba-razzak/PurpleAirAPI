@@ -10,7 +10,8 @@ getPurpleairApiHistoryV2(
   startDate = NULL,
   endDate = NULL,
   average = NULL,
-  fields = NULL
+  fields = NULL,
+  printFlag = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ getPurpleairApiHistoryV2(
 \item{fields}{The "Fields" parameter specifies which 'sensor data fields' to
 include in the response.
 See: https://community.purpleair.com/t/api-history-fields-descriptions/}
+
+\item{printFlag}{Logical. Indicates whether to print progress messages.}
 }
 \value{
 Dataframe of PurpleAir history data of one or multiple sensors.
