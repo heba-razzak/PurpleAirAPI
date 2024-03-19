@@ -134,8 +134,8 @@ getPurpleairApiHistoryV2 <- function(
         # Order by date
         r_df <- r_df[order(r_df$time_stamp), ]
 
-        # Add sensor_id
-        r_df$sensor_id <- sensor
+        # Add sensor_index
+        r_df$sensor_index <- sensor
       }
 
       # Add to the result data frame
