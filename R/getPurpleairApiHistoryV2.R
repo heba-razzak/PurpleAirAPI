@@ -28,28 +28,6 @@ getPurpleairApiHistoryV2 <- function(
     average = NULL,
     fields = NULL
 ) {
-  # Define required packages
-  # required_packages <- c("httr", "jsonlite", "tidyverse", "lubridate", "httpcode")
-
-  # # Loop through each package and check if it is installed
-  # for (package in required_packages) {
-  #   suppressPackageStartupMessages({
-  #     if (!require(package)) {
-  #       stop(paste("Package", package, "not installed. Please install it before running this script."))
-  #     }
-  #   })
-  # }
-
-  # # Install required packages if they are not already installed
-  # for (package in required_packages) {
-  #   suppressMessages({
-  #     if (!requireNamespace(package, quietly = TRUE)) {
-  #       install.packages(package, repos = NULL, dependencies = TRUE)
-  #     }
-  #     require(package)
-  #   })
-  # }
-
   # Define required parameters
   required_params <- c("sensorIndex", "apiReadKey", "startTimeStamp", "endTimeStamp", "average", "fields")
 
