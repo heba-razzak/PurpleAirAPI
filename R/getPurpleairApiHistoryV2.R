@@ -156,6 +156,7 @@ getPurpleairApiHistoryV2 <- function(
 #'
 #' @param apiReadKey API key for accessing the PurpleAir API.
 #' @param fields Vector specifying the fields to retrieve from PurpleAir API.
+#'
 #'               Default: c("latitude", "longitude",
 #'                           "date_created", "last_seen")
 #'

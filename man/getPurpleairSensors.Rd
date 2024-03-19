@@ -13,8 +13,9 @@ getPurpleairSensors(
 \item{apiReadKey}{API key for accessing the PurpleAir API.}
 
 \item{fields}{Vector specifying the fields to retrieve from PurpleAir API.
-Default: c("latitude", "longitude",
-            "date_created", "last_seen")}
+
+              Default: c("latitude", "longitude",
+                          "date_created", "last_seen")}
 }
 \value{
 A data frame containing the required fields for all purpleair sensors
