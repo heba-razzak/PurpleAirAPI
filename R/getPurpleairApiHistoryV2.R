@@ -12,6 +12,12 @@
 #' @param fields The "Fields" parameter specifies which 'sensor data fields' to include in the response. See: https://community.purpleair.com/t/api-history-fields-descriptions/
 #'
 #' @return Dataframe of PurpleAir history data of a single sensor or multiple sensors.
+#'
+#' @import httr
+#' @import jsonlite
+#' @import tidyverse
+#' @import lubridate
+#' @import httpcode
 #' @export
 #'
 getPurpleairApiHistoryV2 <- function(
@@ -23,7 +29,7 @@ getPurpleairApiHistoryV2 <- function(
     fields = NULL
 ) {
   # Define required packages
-  required_packages <- c("httr", "jsonlite", "tidyverse", "lubridate", "httpcode")
+  # required_packages <- c("httr", "jsonlite", "tidyverse", "lubridate", "httpcode")
 
   # # Loop through each package and check if it is installed
   # for (package in required_packages) {
@@ -34,22 +40,15 @@ getPurpleairApiHistoryV2 <- function(
   #   })
   # }
 
-  # Install required packages if they are not already installed
-  for (package in required_packages) {
-    suppressMessages({
-      if (!requireNamespace(package, quietly = TRUE)) {
-        install.packages(package, repos = NULL, dependencies = TRUE)
-      }
-      require(package)
-    })
-  }
-
-  # # Load required packages
-  # library(httr)
-  # library(jsonlite)
-  # library(tidyverse)
-  # library(lubridate)
-  # library(httpcode)
+  # # Install required packages if they are not already installed
+  # for (package in required_packages) {
+  #   suppressMessages({
+  #     if (!requireNamespace(package, quietly = TRUE)) {
+  #       install.packages(package, repos = NULL, dependencies = TRUE)
+  #     }
+  #     require(package)
+  #   })
+  # }
 
   # Define required parameters
   required_params <- c("sensorIndex", "apiReadKey", "startTimeStamp", "endTimeStamp", "average", "fields")
