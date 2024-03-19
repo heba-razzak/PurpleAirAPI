@@ -36,17 +36,20 @@ getPurpleairApiHistoryV2 <- function(
 
   # Install required packages if they are not already installed
   for (package in required_packages) {
-    if (!requireNamespace(package, quietly = TRUE)) {
-      install.packages(package, repos = NULL, dependencies = TRUE)
-    }
+    suppressMessages({
+      if (!requireNamespace(package, quietly = TRUE)) {
+        install.packages(package, repos = NULL, dependencies = TRUE)
+      }
+      library(package)
+    })
   }
 
-  # Load required packages
-  library(httr)
-  library(jsonlite)
-  library(tidyverse)
-  library(lubridate)
-  library(httpcode)
+  # # Load required packages
+  # library(httr)
+  # library(jsonlite)
+  # library(tidyverse)
+  # library(lubridate)
+  # library(httpcode)
 
   # Define required parameters
   required_params <- c("sensorIndex", "apiReadKey", "startTimeStamp", "endTimeStamp", "average", "fields")
