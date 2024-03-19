@@ -161,6 +161,7 @@ getPurpleairApiHistoryV2 <- function(
 #'                           "date_created", "last_seen")
 #'
 #' @return A data frame containing the required fields for all purpleair sensors
+#' @import dplyr
 #' @import httr
 #' @import jsonlite
 #' @export
