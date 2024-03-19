@@ -40,7 +40,7 @@ getPurpleairApiHistoryV2 <- function(
       if (!requireNamespace(package, quietly = TRUE)) {
         install.packages(package, repos = NULL, dependencies = TRUE)
       }
-      library(package)
+      require(package)
     })
   }
 
