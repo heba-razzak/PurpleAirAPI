@@ -112,8 +112,16 @@ getPurpleairApiHistoryV2 <- function(
       )
 
       # Check if request was successful
+      # If request failed show error message
       if (httr::http_error(result)) {
-        stop("HTTP request failed.")
+        error_content <- httr::content(result, as = "text", encoding = "UTF-8")
+        error_details <- jsonlite::fromJSON(error_content)
+        error_message <- paste(
+          "HTTP request failed with status:", httr::status_code(result), "\n",
+          "Error type:", error_details$error, "\n",
+          "Description:", error_details$description
+        )
+        stop(error_message)
       }
 
       # Convert the raw content returned by the API into a character string
