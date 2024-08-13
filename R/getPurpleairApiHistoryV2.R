@@ -41,9 +41,12 @@ getPurpleairApiHistoryV2 <- function(
     }
   }
 
-  # Convert to POSIXct
+  # Convert fields to a comma-separated string if it's not already
+  fields <- paste(fields, collapse = ", ")
+
+  # Convert to POSIXct and set end time to 23:59:59
   start_time <- as.POSIXct(startDate, tz = "UTC")
-  end_time <- as.POSIXct(format(endDate, "%Y-%m-%d 23:59:59"), tz = "UTC")
+  end_time <- as.POSIXct(paste(endDate, "23:59:59"), tz = "UTC")
 
   # Calculate time difference
   t_dif <- end_time - start_time
@@ -108,11 +111,10 @@ getPurpleairApiHistoryV2 <- function(
       result <- httr::GET(
         url_base,
         query = query_list,
-        config = add_headers("X-API-Key" = apiReadKey)
+        config = httr::add_headers("X-API-Key" = apiReadKey)
       )
 
-      # Check if request was successful
-      # If request failed show error message
+      # If request failed show error message and stop
       if (httr::http_error(result)) {
         error_content <- httr::content(result, as = "text", encoding = "UTF-8")
         error_details <- jsonlite::fromJSON(error_content)
@@ -160,7 +162,7 @@ getPurpleairApiHistoryV2 <- function(
     col_names <- strsplit(fields, ", ")[[1]]
 
     # drop rows where "fields" are empty
-    r <- r[complete.cases(r[, col_names]), ]
+    r <- r[stats::complete.cases(r[, col_names]), ]
   }
 
   return(r)
@@ -196,12 +198,19 @@ getPurpleairSensors <- function(
   # Make the HTTP request to the PurpleAir API using the GET function
   result <- httr::GET(
     api_endpoint,
-    config = add_headers("X-API-Key" = apiReadKey)
+    config = httr::add_headers("X-API-Key" = apiReadKey)
   )
 
-  # Check if request was successful
+  # If request failed show error message and stop
   if (httr::http_error(result)) {
-    stop("HTTP request failed.")
+    error_content <- httr::content(result, as = "text", encoding = "UTF-8")
+    error_details <- jsonlite::fromJSON(error_content)
+    error_message <- paste(
+      "HTTP request failed with status:", httr::status_code(result), "\n",
+      "Error type:", error_details$error, "\n",
+      "Description:", error_details$description
+    )
+    stop(error_message)
   }
 
   # Convert the raw content returned by the API into a character string

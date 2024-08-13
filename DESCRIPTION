@@ -1,12 +1,15 @@
 Package: getPurpleairApiHistoryV2
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Historical Data Retrieval from PurpleAir Sensors via API
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Heba Abdelrazzak <hebaarazzak@gmail.com>
+Maintainer: Heba Abdelrazzak <hebaarazzak@gmail.com>
+Description: This package provides functions to retrieve historical data and sensor metadata from the PurpleAir API. 
+    It allows users to download data in chunks to manage API limitations and includes functions for accessing sensor location and creation metadata.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    httr,
+    jsonlite
 RoxygenNote: 7.3.1
