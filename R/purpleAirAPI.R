@@ -143,7 +143,9 @@ getSensorHistory <- function(
   # For each sensor
   for (i in 1:n) {
     sensor <- unique_sensors[i]
-    message(paste("sensor ", sensor, ": ", i, " of ", n))
+    progress_msg <- sprintf("Sensor %d of %d (ID: %s)\r", i, n, sensor)
+    message(progress_msg, appendLF = FALSE)
+
     url_base <- paste0(
       "https://api.purpleair.com/v1/sensors/",
       sensor, "/history"
@@ -212,6 +214,12 @@ getSensorHistory <- function(
 
       # Add to the result data frame
       r <- rbind(r, r_df)
+    }
+    if (i < n) {
+      # To overwrite previous message
+      empty_msg <- paste0(replicate(length(progress_msg), " "), "\r")
+      message(empty_msg, appendLF = FALSE)
+      utils::flush.console()
     }
   }
 
