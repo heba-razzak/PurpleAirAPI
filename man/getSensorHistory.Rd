@@ -33,44 +33,44 @@ Dataframe of PurpleAir history data of one or multiple sensors.
 R function to download historical data from PurpleAir sensors from API.
 }
 \details{
-Fields marked with an asterisk (*) may not be available when using averages. 
+Fields marked with an asterisk (*) may not be available when using averages.
 
-Station information and status fields: 
+Station information and status fields:
 \itemize{
   \item hardware*, latitude*, longitude*, altitude*, firmware_version*, private, rssi, uptime, pa_latency, memory
 }
 
-Environmental fields: 
+Environmental fields:
 \itemize{
   \item humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b, pressure, pressure_a, pressure_b
 }
 
-Miscellaneous fields: 
+Miscellaneous fields:
 \itemize{
   \item voc, voc_a, voc_b, analog_input
 }
 
-PM1.0 fields: 
+PM1.0 fields:
 \itemize{
   \item pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b
 }
 
-PM2.5 fields: 
+PM2.5 fields:
 \itemize{
   \item pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b
 }
 
-PM10.0 fields: 
+PM10.0 fields:
 \itemize{
   \item pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b
 }
 
-Visibility fields: 
+Visibility fields:
 \itemize{
   \item scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b
 }
 
-Particle count fields: 
+Particle count fields:
 \itemize{
   \item 0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a, 0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b
 }

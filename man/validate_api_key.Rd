@@ -7,7 +7,7 @@
 validate_api_key(apiReadKey)
 }
 \arguments{
-\item{apiReadKey}{}
+\item{apiReadKey}{PurpleAir API read key.}
 }
 \description{
 Helper function to validate the API key

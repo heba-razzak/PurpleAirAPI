@@ -358,7 +358,7 @@ getPurpleairSensors <- function(
 }
 #' Helper function to validate the API key
 #'
-#' @param apiReadKey
+#' @param apiReadKey PurpleAir API read key.
 #' @keywords internal
 validate_api_key <- function(apiReadKey) {
   apikey_check <- "https://api.purpleair.com/v1/keys"
