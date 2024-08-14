@@ -1,24 +1,24 @@
-# getPurpleairApiHistoryV2
+# purpleAirAPI
 
-`getPurpleairApiHistoryV2` is an R package that provides functions to access historical data from PurpleAir sensors through their API. This package allows you to download, process, and analyze air quality data collected by PurpleAir sensors.
+`purpleAirAPI` is an R package that provides functions to access historical data from PurpleAir sensors through their API. This package allows you to download, process, and analyze air quality data collected by PurpleAir sensors.
 
 # Installation
 
 To install the package, you can use `devtools` to install it directly from GitHub:
 
 ```r
-# Install getPurpleairApiHistoryV2 from GitHub
-devtools::install_github("yourusername/getPurpleairApiHistoryV2")
+# Install purpleAirAPI from GitHub
+devtools::install_github("yourusername/purpleAirAPI")
 ```
 
 # Getting Started
 
-Here are some examples to help you get started with the `getPurpleairApiHistoryV2` package.
+Here are some examples to help you get started with the `purpleAirAPI` package.
 
 ## Load the Package
 
 ```r
-library(getPurpleairApiHistoryV2)
+library(purpleAirAPI)
 ```
 
 ## Example 1: Get PurpleAir Sensor Data
@@ -46,7 +46,7 @@ head(sensor_data)
 
 ## Example 2: Download Historical Data from a PurpleAir Sensor
 
-The `getPurpleairApiHistoryV2` function allows you to download historical air quality data from a specific PurpleAir sensor.
+The `getSensorHistory` function allows you to download historical air quality data from a specific PurpleAir sensor.
 
 ```r
 # Define your PurpleAir API read key and the sensor index
@@ -60,14 +60,13 @@ average <- "60"  # Average data over 60 minutes
 fields <- c("pm2.5_atm", "pm2.5_atm_a", "pm2.5_atm_b")
 
 # Download historical data
-historical_data <- getPurpleairApiHistoryV2(
+historical_data <- getSensorHistory(
   sensorIndex = sensor_index,
   apiReadKey = api_key,
   startDate = start_date,
   endDate = end_date,
   average = average,
-  fields = fields,
-  printFlag = TRUE
+  fields = fields
 )
 
 # View the first few rows of the historical data
@@ -77,9 +76,12 @@ head(historical_data)
 
 # Additional Information
 
-For more details on the available fields, API documentation, and other features of the PurpleAir API, please refer to the [PurpleAir API documentation](https://community.purpleair.com/t/api-documentation/).
+For more details on the available fields, API documentation, and other features of the PurpleAir API, please refer to the [PurpleAir API documentation](https://api.purpleair.com/).
 
 ## Fields Available for Historical Data
 
 For a full list of fields that can be used with historical data, refer to the [PurpleAir API documentation on sensor history](https://api.purpleair.com/#api-sensors-get-sensor-history-csv).
 
+## Fields Available for Sensor Data
+
+For a full list of fields that can be used with sensor data, refer to the [PurpleAir API documentation on sensor data](https://api.purpleair.com/#api-sensors-get-sensor-data).
