@@ -359,7 +359,7 @@ getPurpleairSensors <- function(
 #' Helper function to validate the API key
 #'
 #' @param apiReadKey PurpleAir API read key.
-#' @keywords internal
+#' @noRd
 validate_api_key <- function(apiReadKey) {
   apikey_check <- "https://api.purpleair.com/v1/keys"
   apikey_response <- httr::GET(apikey_check, config = httr::add_headers("X-API-Key" = apiReadKey))
