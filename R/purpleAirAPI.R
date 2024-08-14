@@ -10,45 +10,45 @@
 #' @param fields The 'sensor data fields' to include in the response.
 #'
 #' @return Dataframe of PurpleAir history data of one or multiple sensors.
-#' 
-#' @details Fields marked with an asterisk (*) may not be available when using averages. 
-#' 
-#' Station information and status fields: 
+#'
+#' @details Fields marked with an asterisk (*) may not be available when using averages.
+#'
+#' Station information and status fields:
 #' \itemize{
 #'   \item hardware*, latitude*, longitude*, altitude*, firmware_version*, private, rssi, uptime, pa_latency, memory
 #' }
 #'
-#' Environmental fields: 
+#' Environmental fields:
 #' \itemize{
 #'   \item humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b, pressure, pressure_a, pressure_b
 #' }
 #'
-#' Miscellaneous fields: 
+#' Miscellaneous fields:
 #' \itemize{
 #'   \item voc, voc_a, voc_b, analog_input
 #' }
 #'
-#' PM1.0 fields: 
+#' PM1.0 fields:
 #' \itemize{
 #'   \item pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b
 #' }
 #'
-#' PM2.5 fields: 
+#' PM2.5 fields:
 #' \itemize{
 #'   \item pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b
 #' }
 #'
-#' PM10.0 fields: 
+#' PM10.0 fields:
 #' \itemize{
 #'   \item pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b
 #' }
 #'
-#' Visibility fields: 
+#' Visibility fields:
 #' \itemize{
 #'   \item scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b
 #' }
 #'
-#' Particle count fields: 
+#' Particle count fields:
 #' \itemize{
 #'   \item 0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a, 0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b
 #' }
@@ -65,11 +65,12 @@ getSensorHistory <- function(
     startDate = NULL,
     endDate = NULL,
     average = NULL,
-    fields = NULL
-) {
+    fields = NULL) {
   # Define required parameters
-  required_params <- c("sensorIndex", "apiReadKey", "startDate", "endDate",
-                       "average", "fields")
+  required_params <- c(
+    "sensorIndex", "apiReadKey", "startDate", "endDate",
+    "average", "fields"
+  )
 
   # Loop through each parameter and check if it is NULL
   for (param in required_params) {
@@ -105,8 +106,10 @@ getSensorHistory <- function(
   names(time_limits) <- average_values
 
   if (!average %in% average_values) {
-    stop(paste("Unsupported average value:", average,
-               "\nAverage value must be 0, 10, 30, 60, 360, 1440, 10080, 43200, 525600"))
+    stop(paste(
+      "Unsupported average value:", average,
+      "\nAverage value must be 0, 10, 30, 60, 360, 1440, 10080, 43200, 525600"
+    ))
   }
 
   # Determine the time limit based on the average
@@ -141,19 +144,24 @@ getSensorHistory <- function(
   for (i in 1:n) {
     sensor <- unique_sensors[i]
     message(paste("sensor ", sensor, ": ", i, " of ", n))
-    url_base <- paste0("https://api.purpleair.com/v1/sensors/",
-                       sensor, "/history")
+    url_base <- paste0(
+      "https://api.purpleair.com/v1/sensors/",
+      sensor, "/history"
+    )
 
     # Download using maximum intervals
     for (j in 1:length(start_timestamps)) {
       # Set variables
       query_list <- list(
         start_timestamp = as.character(as.integer(as.POSIXct(start_timestamps[j],
-                                                             tz = "UTC"))),
+          tz = "UTC"
+        ))),
         end_timestamp = as.character(as.integer(as.POSIXct(end_timestamps[j],
-                                                           tz = "UTC"))),
+          tz = "UTC"
+        ))),
         average = average,
-        fields = fields)
+        fields = fields
+      )
 
       # GET PurpleAir sensor history data
       result <- httr::GET(
@@ -166,8 +174,10 @@ getSensorHistory <- function(
       if (httr::http_error(result)) {
         error_content <- httr::content(result, as = "text", encoding = "UTF-8")
         error_details <- jsonlite::fromJSON(error_content)
-        error_message <- paste(httr::status_code(result),
-                               error_details$error, error_details$description)
+        error_message <- paste(
+          httr::status_code(result),
+          error_details$error, error_details$description
+        )
         stop(error_message)
       }
 
@@ -185,10 +195,13 @@ getSensorHistory <- function(
         names(r_df) <- response_list$fields
 
         # Convert epoch to datetime format
-        r_df$time_stamp <- format(as.POSIXct(as.integer(r_df$time_stamp),
-                                             origin = "1970-01-01",
-                                             tz = "UTC"),
-                                  format = "%Y-%m-%d %H:%M:%S")
+        r_df$time_stamp <- format(
+          as.POSIXct(as.integer(r_df$time_stamp),
+            origin = "1970-01-01",
+            tz = "UTC"
+          ),
+          format = "%Y-%m-%d %H:%M:%S"
+        )
 
         # Order by date
         r_df <- r_df[order(r_df$time_stamp), ]
@@ -208,7 +221,7 @@ getSensorHistory <- function(
 
     # Drop rows where all of the "fields" are empty
     r <- r[rowSums(is.na(r[, col_names])) != length(col_names), ]
-    
+
     # Reset index
     rownames(r) <- NULL
   }
@@ -225,7 +238,7 @@ getSensorHistory <- function(
 #'               Default: c("latitude", "longitude", "date_created", "last_seen")
 #'
 #' @return A data frame containing the required fields for all PurpleAir sensors
-#' 
+#'
 #' @details Available fields:
 #'
 #' \strong{Station information and status fields:}
@@ -281,27 +294,28 @@ getSensorHistory <- function(
 #'
 getPurpleairSensors <- function(
     apiReadKey = NULL,
-    fields = c("latitude", "longitude", "date_created", "last_seen")
-) {
-  # Check if required parameters 
+    fields = c("latitude", "longitude", "date_created", "last_seen")) {
+  # Check if required parameters
   if (is.null("apiReadKey")) {
     stop(paste("apiReadKey not defined!"))
   }
   # Define required parameters
   required_params <- c("apiReadKey")
-  
+
   # Loop through each parameter and check if it is NULL
   for (param in required_params) {
     if (is.null(get(param))) {
       stop(paste(param, "not defined!"))
     }
   }
-  
+
   # Validate API key
   validate_api_key(apiReadKey)
 
-  api_endpoint <- paste0("https://api.purpleair.com/v1/sensors?fields=",
-                         paste(fields, collapse = "%2C"))
+  api_endpoint <- paste0(
+    "https://api.purpleair.com/v1/sensors?fields=",
+    paste(fields, collapse = "%2C")
+  )
 
   # GET PurpleAir sensor data
   result <- httr::GET(
@@ -313,8 +327,10 @@ getPurpleairSensors <- function(
   if (httr::http_error(result)) {
     error_content <- httr::content(result, as = "text", encoding = "UTF-8")
     error_details <- jsonlite::fromJSON(error_content)
-    error_message <- paste(httr::status_code(result),
-                           error_details$error, error_details$description)
+    error_message <- paste(
+      httr::status_code(result),
+      error_details$error, error_details$description
+    )
     stop(error_message)
   }
 
@@ -333,7 +349,8 @@ getPurpleairSensors <- function(
   for (col in date_cols) {
     if (col %in% names(purpleair)) {
       purpleair[[col]] <- as.Date(as.POSIXct(purpleair[[col]],
-                                             origin = "1970-01-01"))
+        origin = "1970-01-01"
+      ))
     }
   }
 
@@ -341,7 +358,7 @@ getPurpleairSensors <- function(
 }
 #' Helper function to validate the API key
 #'
-#' @param apiReadKey 
+#' @param apiReadKey
 #' @keywords internal
 validate_api_key <- function(apiReadKey) {
   apikey_check <- "https://api.purpleair.com/v1/keys"
