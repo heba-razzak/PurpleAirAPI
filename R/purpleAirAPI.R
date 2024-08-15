@@ -66,6 +66,8 @@ getSensorHistory <- function(
     endDate = NULL,
     average = NULL,
     fields = NULL) {
+  # Initialize for flushing console
+  max_len <- 1
   # Define required parameters
   required_params <- c(
     "sensorIndex", "apiReadKey", "startDate", "endDate",
@@ -151,13 +153,16 @@ getSensorHistory <- function(
 
     # Download using maximum intervals
     for (j in 1:length(start_timestamps)) {
+      # Print progress message and flush console every time
+      message("\r", strrep(" ", max_len), "\r", appendLF = FALSE)
       msg_dates <- paste(as.Date(start_timestamps[j]), "to", as.Date(end_timestamps[j]))
       progress_msg <- sprintf(
-        "Sensor %d of %d (ID: %s), Interval: %s\r",
+        "Sensor %d of %d (ID: %s), Interval: %s",
         i, n, sensor, msg_dates
       )
       message(progress_msg, appendLF = FALSE)
-      max_len <- length(progress_msg)
+      max_len <- max(max_len, length(progress_msg))
+
       # Set variables
       query_list <- list(
         start_timestamp = as.character(as.integer(as.POSIXct(start_timestamps[j],
@@ -185,6 +190,7 @@ getSensorHistory <- function(
           httr::status_code(result),
           error_details$error, error_details$description
         )
+        message("\r", strrep(" ", max_len), "\r", appendLF = FALSE)
         stop(error_message)
       }
 
@@ -219,11 +225,6 @@ getSensorHistory <- function(
 
       # Add to the result data frame
       r <- rbind(r, r_df)
-
-      # To overwrite previous message
-      empty_msg <- paste0(replicate(max_len, " "), "\r")
-      message(empty_msg, appendLF = FALSE)
-      utils::flush.console()
     }
   }
 
@@ -237,7 +238,6 @@ getSensorHistory <- function(
     # Reset index
     rownames(r) <- NULL
   }
-
   return(r)
 }
 
