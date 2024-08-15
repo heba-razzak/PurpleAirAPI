@@ -8,7 +8,7 @@ To install the package, you can use `devtools` to install it directly from GitHu
 
 ```r
 # Install purpleAirAPI from GitHub
-devtools::install_github("yourusername/purpleAirAPI")
+devtools::install_github("heba-razzak/purpleAirAPI")
 ```
 
 # Getting Started
@@ -51,12 +51,12 @@ The `getSensorHistory` function allows you to download historical air quality da
 ```r
 # Define your PurpleAir API read key and the sensor index
 api_key <- "your_api_key_here"
-sensor_index <- 767
+sensor_index <- 2858
 
 # Define the date range and the fields to retrieve
 start_date <- "2018-01-01"
 end_date <- "2018-03-31"
-average <- "60"  # Average data over 60 minutes
+average <- "60" # Hourly averages
 fields <- c("pm2.5_atm", "pm2.5_atm_a", "pm2.5_atm_b")
 
 # Download historical data
@@ -72,6 +72,13 @@ historical_data <- getSensorHistory(
 # View the first few rows of the historical data
 head(historical_data)
 
+     time_stamp          pm2.5_atm pm2.5_atm_a pm2.5_atm_b sensor_index
+1 2018-01-01 00:00:00      50.318      49.301      51.335         2858
+2 2018-01-01 01:00:00      48.519      46.951      50.087         2858
+3 2018-01-01 02:00:00      48.688      47.034      50.341         2858
+4 2018-01-01 03:00:00      51.705      49.693      53.716         2858
+5 2018-01-01 04:00:00      53.279      51.212      55.346         2858
+6 2018-01-01 05:00:00      48.749      46.797      50.700         2858
 ```
 
 # Additional Information
