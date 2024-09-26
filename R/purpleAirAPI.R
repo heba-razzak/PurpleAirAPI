@@ -1,6 +1,6 @@
-#' purpleAirAPI
+#' getSensorHistory
 #'
-#' R function to download historical data from PurpleAir sensors from API.
+#' Download historical data for PurpleAir sensors using API.
 #'
 #' @param sensorIndex PurpleAir sensor’s index.
 #' @param apiReadKey PurpleAir API read key.
@@ -241,7 +241,7 @@ getSensorHistory <- function(
   return(r)
 }
 
-#' Get PurpleAir Sensor Data
+#' getPurpleairSensors
 #'
 #' Retrieves data from PurpleAir sensors based on specified fields.
 #'
