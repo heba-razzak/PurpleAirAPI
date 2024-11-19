@@ -33,62 +33,57 @@ Dataframe of PurpleAir history data of one or multiple sensors.
 Download historical data for PurpleAir sensors using API.
 }
 \details{
-Fields marked with an asterisk (*) may not be available when using averages.
+Available fields:
 
-Station information and status fields:
 \itemize{
-  \item hardware*, latitude*, longitude*, altitude*, firmware_version*, private, rssi, uptime, pa_latency, memory
-}
-
-Environmental fields:
-\itemize{
-  \item humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b, pressure, pressure_a, pressure_b
-}
-
-Miscellaneous fields:
-\itemize{
-  \item voc, voc_a, voc_b, analog_input
-}
-
-PM1.0 fields:
-\itemize{
-  \item pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b
-}
-
-PM2.5 fields:
-\itemize{
-  \item pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b
-}
-
-PM10.0 fields:
-\itemize{
-  \item pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b
-}
-
-Visibility fields:
-\itemize{
-  \item scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b
-}
-
-Particle count fields:
-\itemize{
-  \item 0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a, 0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b
+  \item \strong{Station information and status fields:}{
+    hardware*, latitude*, longitude*, altitude*, firmware_version*, private, rssi,
+    uptime, pa_latency, memory
+  }
+  \item \strong{Environmental fields:}{
+    humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b,
+    pressure, pressure_a, pressure_b
+  }
+  \item \strong{Miscellaneous fields:}{
+    voc, voc_a, voc_b, analog_input
+  }
+  \item \strong{PM1.0 fields:}{
+    pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b
+  }
+  \item \strong{PM2.5 fields:}{
+    pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b,
+    pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b
+  }
+  \item \strong{PM10.0 fields:}{
+    pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b
+  }
+  \item \strong{Visibility fields:}{
+    scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b,
+    deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b
+  }
+  \item \strong{Particle count fields:}{
+    0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a,
+    0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count,
+    2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b,
+    10.0_um_count, 10.0_um_count_a, 10.0_um_count_b
+  }
 }
 }
 \examples{
 \dontrun{
 # Download hourly PM2.5 data for one month
 history <- getSensorHistory(
-  sensorIndex = 12345,
+  sensorIndex = c(6127, 9014, 3124),
   apiReadKey = "YOUR_API_KEY",
   startDate = "2024-01-01",
   endDate = "2024-01-31",
   average = 60,
-  fields = c("pm2.5_atm", "temperature", "humidity")
+  fields = c("pm2.5_alt", "temperature", "humidity")
 )
 }
 
 }
 \references{
-For more details on the available fields, see the \href{https://api.purpleair.com/#api-sensors-get-sensor-history-csv}{PurpleAir API documentation}.
+For more details on the available fields, see the PurpleAir API documentation:
+\url{https://api.purpleair.com/#api-sensors-get-sensor-history-csv}
 }

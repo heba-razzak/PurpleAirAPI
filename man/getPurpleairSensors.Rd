@@ -24,49 +24,53 @@ Retrieves data from PurpleAir sensors based on specified fields.
 \details{
 Available fields:
 
-\strong{Station information and status fields:}
 \itemize{
-  \item \code{name}, \code{icon}, \code{model}, \code{hardware}, \code{location_type}, \code{private}, \code{latitude}, \code{longitude}, \code{altitude}, \code{position_rating}, \code{led_brightness}, \code{firmware_version}, \code{firmware_upgrade}, \code{rssi}, \code{uptime}, \code{pa_latency}, \code{memory}, \code{last_seen}, \code{last_modified}, \code{date_created}, \code{channel_state}, \code{channel_flags}, \code{channel_flags_manual}, \code{channel_flags_auto}, \code{confidence}, \code{confidence_manual}, \code{confidence_auto}
-}
-
-\strong{Environmental fields:}
-\itemize{
-  \item \code{humidity}, \code{humidity_a}, \code{humidity_b}, \code{temperature}, \code{temperature_a}, \code{temperature_b}, \code{pressure}, \code{pressure_a}, \code{pressure_b}
-}
-
-\strong{Miscellaneous fields:}
-\itemize{
-  \item \code{voc}, \code{voc_a}, \code{voc_b}, \code{ozone1}, \code{analog_input}
-}
-
-\strong{PM1.0 fields:}
-\itemize{
-  \item \code{pm1.0}, \code{pm1.0_a}, \code{pm1.0_b}, \code{pm1.0_atm}, \code{pm1.0_atm_a}, \code{pm1.0_atm_b}, \code{pm1.0_cf_1}, \code{pm1.0_cf_1_a}, \code{pm1.0_cf_1_b}
-}
-
-\strong{PM2.5 fields:}
-\itemize{
-  \item \code{pm2.5_alt}, \code{pm2.5_alt_a}, \code{pm2.5_alt_b}, \code{pm2.5}, \code{pm2.5_a}, \code{pm2.5_b}, \code{pm2.5_atm}, \code{pm2.5_atm_a}, \code{pm2.5_atm_b}, \code{pm2.5_cf_1}, \code{pm2.5_cf_1_a}, \code{pm2.5_cf_1_b}
-}
-
-\strong{PM2.5 pseudo (simple running) average fields:}
-\itemize{
-  \item \code{pm2.5_10minute}, \code{pm2.5_10minute_a}, \code{pm2.5_10minute_b}, \code{pm2.5_30minute}, \code{pm2.5_30minute_a}, \code{pm2.5_30minute_b}, \code{pm2.5_60minute}, \code{pm2.5_60minute_a}, \code{pm2.5_60minute_b}, \code{pm2.5_6hour}, \code{pm2.5_6hour_a}, \code{pm2.5_6hour_b}, \code{pm2.5_24hour}, \code{pm2.5_24hour_a}, \code{pm2.5_24hour_b}, \code{pm2.5_1week}, \code{pm2.5_1week_a}, \code{pm2.5_1week_b}
-}
-
-\strong{PM10.0 fields:}
-\itemize{
-  \item \code{pm10.0}, \code{pm10.0_a}, \code{pm10.0_b}, \code{pm10.0_atm}, \code{pm10.0_atm_a}, \code{pm10.0_atm_b}, \code{pm10.0_cf_1}, \code{pm10.0_cf_1_a}, \code{pm10.0_cf_1_b}
-}
-
-\strong{Particle count fields:}
-\itemize{
-  \item \code{0.3_um_count}, \code{0.3_um_count_a}, \code{0.3_um_count_b}, \code{0.5_um_count}, \code{0.5_um_count_a}, \code{0.5_um_count_b}, \code{1.0_um_count}, \code{1.0_um_count_a}, \code{1.0_um_count_b}, \code{2.5_um_count}, \code{2.5_um_count_a}, \code{2.5_um_count_b}, \code{5.0_um_count}, \code{5.0_um_count_a}, \code{5.0_um_count_b}, \code{10.0_um_count}, \code{10.0_um_count_a}, \code{10.0_um_count_b}
-}
-
-\strong{ThingSpeak fields (for data retrieval from api.thingspeak.com):}
-\itemize{
-  \item \code{primary_id_a}, \code{primary_key_a}, \code{secondary_id_a}, \code{secondary_key_a}, \code{primary_id_b}, \code{primary_key_b}, \code{secondary_id_b}, \code{secondary_key_b}
+  \item \strong{Station information and status fields:}{
+    name, icon, model, hardware, location_type, private, latitude, longitude, altitude,
+    position_rating, led_brightness, firmware_version, firmware_upgrade, rssi, uptime,
+    pa_latency, memory, last_seen, last_modified, date_created, channel_state, channel_flags,
+    channel_flags_manual, channel_flags_auto, confidence, confidence_manual, confidence_auto
+  }
+  \item \strong{Environmental fields:}{
+    humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b,
+    pressure, pressure_a, pressure_b
+  }
+  \item \strong{Miscellaneous fields:}{
+    voc, voc_a, voc_b, ozone1, analog_input
+  }
+  \item \strong{PM1.0 fields:}{
+    pm1.0, pm1.0_a, pm1.0_b, pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b,
+    pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b
+  }
+  \item \strong{PM2.5 fields:}{
+    pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5, pm2.5_a, pm2.5_b,
+    pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b
+  }
+  \item \strong{PM2.5 pseudo (simple running) average fields:}{
+    pm2.5_10minute, pm2.5_10minute_a, pm2.5_10minute_b, pm2.5_30minute,
+    pm2.5_30minute_a, pm2.5_30minute_b, pm2.5_60minute, pm2.5_60minute_a,
+    pm2.5_60minute_b, pm2.5_6hour, pm2.5_6hour_a, pm2.5_6hour_b,
+    pm2.5_24hour, pm2.5_24hour_a, pm2.5_24hour_b, pm2.5_1week,
+    pm2.5_1week_a, pm2.5_1week_b
+  }
+  \item \strong{PM10.0 fields:}{
+    pm10.0, pm10.0_a, pm10.0_b, pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b,
+    pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b
+  }
+  \item \strong{Visibility fields:}{
+    scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b,
+    deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b
+  }
+  \item \strong{Particle count fields:}{
+    0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a,
+    0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b,
+    2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count,
+    5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b
+  }
+  \item \strong{ThingSpeak fields (used to retrieve data from api.thingspeak.com):}{
+    primary_id_a, primary_key_a, secondary_id_a, secondary_key_a,
+    primary_id_b, primary_key_b, secondary_id_b, secondary_key_b
+  }
 }
 }
 \examples{
@@ -77,11 +81,12 @@ sensors <- getPurpleairSensors(apiReadKey = "YOUR_API_KEY")
 # Get sensor data with custom fields
 sensors <- getPurpleairSensors(
   apiReadKey = "YOUR_API_KEY",
-  fields = c("name", "latitude", "longitude", "pm2.5")
+  fields = c("latitude", "longitude", "date_created", "last_seen", "location_type")
 )
 }
 
 }
 \references{
-For more details on the available fields, see the \href{https://api.purpleair.com/#api-sensors-get-sensor-data}{PurpleAir API documentation}.
+For more details on the available fields, see the PurpleAir API documentation:
+\url{https://api.purpleair.com/#api-sensors-get-sensors-data}
 }
