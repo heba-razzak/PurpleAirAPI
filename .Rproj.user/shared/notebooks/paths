@@ -1,3 +1,5 @@
+/Users/heba/.Renviron="C47C8A77"
+/Users/heba/Documents/GitHub/PurpleAirAPI/vignettes/getting-started-with-purpleairapi.Rmd="89AEA9B6"
 /Users/heba/Documents/GitHub/purpleAirAPI/DESCRIPTION="C923730B"
 /Users/heba/Documents/GitHub/purpleAirAPI/LICENSE="2B502C45"
 /Users/heba/Documents/GitHub/purpleAirAPI/NAMESPACE="F6A711A3"
@@ -5,3 +7,6 @@
 /Users/heba/Documents/GitHub/purpleAirAPI/README.md="AEF924E5"
 /Users/heba/Documents/GitHub/purpleAirAPI/man/getPurpleairSensors.Rd="3E5BE5FF"
 /Users/heba/Documents/GitHub/purpleAirAPI/man/getSensorHistory.Rd="2E5E0E14"
+/Users/heba/Documents/GitHub/purpleAirAPI/tests/testthat.R="491F5FB4"
+/Users/heba/Documents/GitHub/purpleAirAPI/tests/testthat/test-api-functions.R="ABBEEDCC"
+/Users/heba/Documents/GitHub/purpleAirAPI/vignettes/getting-started-with-purpleairapi.Rmd="8D9B1179"

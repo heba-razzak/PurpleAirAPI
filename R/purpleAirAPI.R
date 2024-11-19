@@ -2,7 +2,7 @@
 #'
 #' Download historical data for PurpleAir sensors using API.
 #'
-#' @param sensorIndex PurpleAir sensor’s index.
+#' @param sensorIndex PurpleAir sensor's index.
 #' @param apiReadKey PurpleAir API read key.
 #' @param startDate Date of the first required history entry.
 #' @param endDate Date of the history to return. Uses end of date specified.
@@ -54,7 +54,20 @@
 #' }
 #'
 #' @references For more details on the available fields, see the \href{https://api.purpleair.com/#api-sensors-get-sensor-history-csv}{PurpleAir API documentation}.
-#'
+#' 
+#' @examples
+#' \dontrun{
+#' # Download hourly PM2.5 data for one month
+#' history <- getSensorHistory(
+#'   sensorIndex = 12345,
+#'   apiReadKey = "YOUR_API_KEY",
+#'   startDate = "2024-01-01",
+#'   endDate = "2024-01-31",
+#'   average = 60,
+#'   fields = c("pm2.5_atm", "temperature", "humidity")
+#' )
+#' }
+#' 
 #' @import httr
 #' @import jsonlite
 #' @export
@@ -298,6 +311,18 @@ getSensorHistory <- function(
 #'   \item \code{primary_id_a}, \code{primary_key_a}, \code{secondary_id_a}, \code{secondary_key_a}, \code{primary_id_b}, \code{primary_key_b}, \code{secondary_id_b}, \code{secondary_key_b}
 #' }
 #'
+#' @examples
+#' \dontrun{
+#' # Get sensor data with default fields
+#' sensors <- getPurpleairSensors(apiReadKey = "YOUR_API_KEY")
+#' 
+#' # Get sensor data with custom fields
+#' sensors <- getPurpleairSensors(
+#'   apiReadKey = "YOUR_API_KEY",
+#'   fields = c("name", "latitude", "longitude", "pm2.5")
+#' )
+#' }
+#' 
 #' @references For more details on the available fields, see the \href{https://api.purpleair.com/#api-sensors-get-sensor-data}{PurpleAir API documentation}.
 #'
 #' @import httr

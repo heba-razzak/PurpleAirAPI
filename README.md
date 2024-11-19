@@ -1,24 +1,24 @@
-# purpleAirAPI
+# PurpleAirAPI
 
-`purpleAirAPI` is an R package that provides functions to access historical data from PurpleAir sensors through their API. This package allows you to download, process, and analyze air quality data collected by PurpleAir sensors.
+`PurpleAirAPI` is an R package that provides functions to access historical data from PurpleAir sensors through their API. This package allows you to download, process, and analyze air quality data collected by PurpleAir sensors.
 
 # Installation
 
 To install the package, you can use `devtools` to install it directly from GitHub:
 
 ```r
-# Install purpleAirAPI from GitHub
-devtools::install_github("heba-razzak/purpleAirAPI")
+# Install PurpleAirAPI from GitHub
+devtools::install_github("heba-razzak/PurpleAirAPI")
 ```
 
 # Getting Started
 
-Here are some examples to help you get started with the `purpleAirAPI` package.
+Here are some examples to help you get started with the `PurpleAirAPI` package.
 
 ## Load the Package
 
 ```r
-library(purpleAirAPI)
+library(PurpleAirAPI)
 ```
 
 ## Example 1: Get PurpleAir Sensor Data

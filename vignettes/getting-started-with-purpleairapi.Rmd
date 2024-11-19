@@ -1,0 +1,85 @@
+---
+title: "Getting Started with PurpleAirAPI"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with PurpleAirAPI}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PurpleAirAPI)
+```
+
+## Introduction
+
+The PurpleAirAPI package provides tools for accessing air quality data from PurpleAir sensors. This vignette demonstrates how to:
+
+1. Get sensor metadata
+2. Download historical data
+3. Process and analyze the data
+
+## Getting Sensor Information
+
+First, let's get information about available sensors:
+
+```{r eval=FALSE}
+# Replace with your API key
+api_key <- "YOUR_API_KEY"
+
+# Get sensor locations
+sensors <- getPurpleairSensors(
+  apiReadKey = api_key,
+  fields = c("name", "latitude", "longitude", "date_created")
+)
+
+head(sensors)
+```
+
+## Downloading Historical Data
+
+Once you have identified sensors of interest, you can download their historical data:
+
+```{r eval=FALSE}
+# Download one month of hourly data
+history <- getSensorHistory(
+  sensorIndex = 1234,  # Replace with actual sensor ID
+  apiReadKey = api_key,
+  startDate = "2024-01-01",
+  endDate = "2024-01-31",
+  average = 60,  # hourly averages
+  fields = c("pm2.5_atm", "temperature", "humidity")
+)
+
+head(history)
+```
+
+## Data Analysis Example
+
+Here's a simple example of analyzing the data:
+
+```{r eval=FALSE}
+# Calculate daily averages
+daily_avg <- aggregate(
+  pm2.5_atm ~ format(as.Date(time_stamp), "%Y-%m-%d"),
+  data = history,
+  FUN = mean
+)
+
+# Basic plot
+plot(
+  as.Date(daily_avg[,1]),
+  daily_avg$pm2.5_atm,
+  type = "l",
+  xlab = "Date",
+  ylab = "PM2.5 (µg/m³)",
+  main = "Daily Average PM2.5 Levels"
+)
+```
