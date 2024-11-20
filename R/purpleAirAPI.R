@@ -6,27 +6,45 @@
 #' @param apiReadKey PurpleAir API read key.
 #' @param startDate Date of the first required history entry.
 #' @param endDate Date of the history to return. Uses end of date specified.
-#' @param average The desired average in minutes: 0, 10, 30, 60, 360, 1440, 10080, 43200, 525600
+#' @param average The desired average in minutes: 0, 10, 30, 60, 360, 1440, 
+#' 10080, 43200, 525600
 #' @param fields The 'sensor data fields' to include in the response.
 #'
 #' @return Dataframe of PurpleAir history data of one or multiple sensors.
 #'
-#' @details
-#' Available fields:
-#'
-#' \itemize{
-#'   \item \strong{Station information and status fields:}{hardware*, latitude*, longitude*, altitude*, firmware_version*, private, rssi,uptime, pa_latency, memory}
-#'   \item \strong{Environmental fields:}{humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b,pressure, pressure_a, pressure_b}
-#'   \item \strong{Miscellaneous fields:}{voc, voc_a, voc_b, analog_input}
-#'   \item \strong{PM1.0 fields:}{pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b}
-#'   \item \strong{PM2.5 fields:}{pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b,pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b}
-#'   \item \strong{PM10.0 fields:}{pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b}
-#'   \item \strong{Visibility fields:}{scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b,deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b}
-#'   \item \strong{Particle count fields:}{0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a,0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count,2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b,10.0_um_count, 10.0_um_count_a, 10.0_um_count_b}
+#' @details Available fields:\tabular{ll}{
+#'   \code{Station Information and Status} \tab hardware*, latitude*, 
+#'   longitude*, altitude*, firmware_version*, private, rssi, uptime,
+#'    pa_latency, memory \cr
+#'   \tab \cr
+#'   \code{Environmental} \tab humidity, humidity_a, humidity_b, temperature,
+#'    temperature_a, temperature_b, pressure, pressure_a, pressure_b \cr
+#'   \tab \cr
+#'   \code{Miscellaneous} \tab voc, voc_a, voc_b, analog_input \cr
+#'   \tab \cr
+#'   \code{PM1.0} \tab pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1,
+#'    pm1.0_cf_1_a, pm1.0_cf_1_b \cr
+#'   \tab \cr
+#'   \code{PM2.5} \tab pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, 
+#'   pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b \cr
+#'   \tab \cr
+#'   \code{PM10.0} \tab pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, 
+#'   pm10.0_cf_1_a, pm10.0_cf_1_b \cr
+#'   \tab \cr
+#'   \code{Visibility} \tab scattering_coefficient, scattering_coefficient_a, 
+#'   scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, 
+#'   visual_range, visual_range_a, visual_range_b \cr
+#'   \tab \cr
+#'   \code{Particle Count} \tab 0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 
+#'   0.5_um_count, 0.5_um_count_a, 0.5_um_count_b, 1.0_um_count, 1.0_um_count_a,
+#'    1.0_um_count_b, 2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 
+#'    5.0_um_count, 5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 
+#'    10.0_um_count_a, 10.0_um_count_b \cr
 #' }
 #' 
 #' @references 
-#' For more details on the available fields, see the PurpleAir API documentation:
+#' For more details on the available fields, see the PurpleAir API 
+#' documentation:
 #' \url{https://api.purpleair.com/#api-sensors-get-sensor-history-csv}
 #' 
 #' @examples
@@ -142,7 +160,8 @@ getSensorHistory <- function(
     for (j in 1:length(start_timestamps)) {
       # Print progress message and flush console every time
       message("\r", strrep(" ", max_len), "\r", appendLF = FALSE)
-      msg_dates <- paste(as.Date(start_timestamps[j]), "to", as.Date(end_timestamps[j]))
+      msg_dates <- paste(as.Date(start_timestamps[j]), "to", 
+                         as.Date(end_timestamps[j]))
       progress_msg <- sprintf(
         "Sensor %d of %d (ID: %s), Interval: %s",
         i, n, sensor, msg_dates
@@ -152,11 +171,13 @@ getSensorHistory <- function(
       
       # Set variables
       query_list <- list(
-        start_timestamp = as.character(as.integer(as.POSIXct(start_timestamps[j],
-                                                             tz = "UTC"
+        start_timestamp = as.character(
+          as.integer(as.POSIXct(start_timestamps[j],
+                                tz = "UTC"
         ))),
-        end_timestamp = as.character(as.integer(as.POSIXct(end_timestamps[j],
-                                                           tz = "UTC"
+        end_timestamp = as.character(
+          as.integer(as.POSIXct(end_timestamps[j],
+                                tz = "UTC"
         ))),
         average = average,
         fields = fields
@@ -233,28 +254,52 @@ getSensorHistory <- function(
 #' Retrieves data from PurpleAir sensors based on specified fields.
 #'
 #' @param apiReadKey API key for accessing the PurpleAir API.
-#' @param fields Vector specifying the fields to retrieve from PurpleAir API.          Default: c("latitude", "longitude", "date_created", "last_seen")
+#' @param fields Vector specifying the fields to retrieve from PurpleAir API.
+#' 
+#' Default: c("latitude", "longitude", "date_created", "last_seen")
 #'
 #' @return A data frame containing the required fields for all PurpleAir sensors
 #'
-#' @details
-#' Available fields:
-#'
-#' \itemize{
-#'   \item \strong{Station information and status fields:}{name, icon, model, hardware, location_type, private, latitude, longitude, altitude,position_rating, led_brightness, firmware_version, firmware_upgrade, rssi, uptime,pa_latency, memory, last_seen, last_modified, date_created, channel_state, channel_flags,channel_flags_manual, channel_flags_auto, confidence, confidence_manual, confidence_auto}
-#'   \item \strong{Environmental fields:}{humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b,pressure, pressure_a, pressure_b}
-#'   \item \strong{Miscellaneous fields:}{voc, voc_a, voc_b, ozone1, analog_input}
-#'   \item \strong{PM1.0 fields:}{pm1.0, pm1.0_a, pm1.0_b, pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b,pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b}
-#'   \item \strong{PM2.5 fields:}{pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5, pm2.5_a, pm2.5_b,pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b}
-#'   \item \strong{PM2.5 pseudo (simple running) average fields:}{pm2.5_10minute, pm2.5_10minute_a, pm2.5_10minute_b, pm2.5_30minute,pm2.5_30minute_a, pm2.5_30minute_b, pm2.5_60minute, pm2.5_60minute_a,pm2.5_60minute_b, pm2.5_6hour, pm2.5_6hour_a, pm2.5_6hour_b,pm2.5_24hour, pm2.5_24hour_a, pm2.5_24hour_b, pm2.5_1week,pm2.5_1week_a, pm2.5_1week_b}
-#'   \item \strong{PM10.0 fields:}{pm10.0, pm10.0_a, pm10.0_b, pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b,pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b}
-#'   \item \strong{Visibility fields:}{scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b,deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b}
-#'   \item \strong{Particle count fields:}{0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a,0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b,2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count,5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b}
-#'   \item \strong{ThingSpeak fields (used to retrieve data from api.thingspeak.com):}{primary_id_a, primary_key_a, secondary_id_a, secondary_key_a,primary_id_b, primary_key_b, secondary_id_b, secondary_key_b}
+#' @details Available fields:\tabular{ll}{
+#'   \code{Station Information and Status} \tab name, icon, model,
+#'    hardware, location_type, private, latitude, longitude, altitude,
+#'     position_rating, led_brightness, firmware_version, firmware_upgrade,
+#'      rssi, uptime, pa_latency, memory, last_seen, last_modified, 
+#'      date_created, channel_state, channel_flags, channel_flags_manual,
+#'       channel_flags_auto, confidence, confidence_manual, confidence_auto \cr
+#'   \tab \cr
+#'   \code{Environmental} \tab humidity, humidity_a, humidity_b,
+#'    temperature, temperature_a, temperature_b, pressure, pressure_a,
+#'     pressure_b \cr
+#'   \tab \cr
+#'   \code{Miscellaneous} \tab voc, voc_a, voc_b, ozone1,
+#'    analog_input \cr
+#'   \tab \cr
+#'   \code{PM1.0} \tab pm1.0, pm1.0_a, pm1.0_b, pm1.0_atm, 
+#'   pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b \cr
+#'   \tab \cr
+#'   \code{PM2.5} \tab pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b,
+#'    pm2.5, pm2.5_a, pm2.5_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b,
+#'     pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b \cr
+#'   \tab \cr
+#'   \code{Visibility} \tab scattering_coefficient,
+#'    scattering_coefficient_a, scattering_coefficient_b, deciviews, 
+#'    deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b \cr
+#'   \tab \cr
+#'   \code{Particle Count} \tab 0.3_um_count, 0.3_um_count_a,
+#'    0.3_um_count_b, 0.5_um_count, 0.5_um_count_a, 0.5_um_count_b,
+#'     1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count,
+#'      2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a,
+#'       5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b \cr
+#'   \tab \cr
+#'   \code{ThingSpeak} \tab primary_id_a, primary_key_a,
+#'    secondary_id_a, secondary_key_a, primary_id_b, primary_key_b,
+#'     secondary_id_b, secondary_key_b \cr
 #' }
 #' 
 #' @references
-#' For more details on the available fields, see the PurpleAir API documentation:
+#' For more details on the available fields, see the PurpleAir API 
+#' documentation:
 #' \url{https://api.purpleair.com/#api-sensors-get-sensors-data}
 #' 
 #' @examples
@@ -265,7 +310,8 @@ getSensorHistory <- function(
 #' # Get sensor data with custom fields
 #' sensors <- getPurpleairSensors(
 #'   apiReadKey = "YOUR_API_KEY",
-#'   fields = c("latitude", "longitude", "date_created", "last_seen", "location_type")
+#'   fields = c("latitude", "longitude", "date_created", "last_seen",
+#'    "location_type")
 #' )
 #' }
 #' 
@@ -343,11 +389,15 @@ getPurpleairSensors <- function(
 #' @noRd
 validate_api_key <- function(apiReadKey) {
   apikey_check <- "https://api.purpleair.com/v1/keys"
-  apikey_response <- httr::GET(apikey_check, config = httr::add_headers("X-API-Key" = apiReadKey))
+  apikey_response <- httr::GET(
+    apikey_check, config = httr::add_headers("X-API-Key" = apiReadKey))
   if (httr::http_error(apikey_response)) {
-    error_content <- httr::content(apikey_response, as = "text", encoding = "UTF-8")
+    error_content <- httr::content(
+      apikey_response, as = "text", encoding = "UTF-8")
     error_details <- jsonlite::fromJSON(error_content)
-    error_message <- paste(httr::status_code(apikey_response), error_details$error, error_details$description)
+    error_message <- paste(
+      httr::status_code(apikey_response),
+      error_details$error, error_details$description)
     stop(error_message)
   }
 }
