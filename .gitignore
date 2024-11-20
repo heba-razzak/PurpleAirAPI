@@ -6,3 +6,4 @@
 /Meta/
 PurpleAirAPI.Rproj
 .Rbuildignore
+.DS_Store
