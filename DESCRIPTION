@@ -1,14 +1,16 @@
 Type: Package
 Package: PurpleAirAPI
-Title: Historical Data Retrieval from PurpleAir Sensors via API
+Title: Historical Data Retrieval from 'PurpleAir' Sensors via API
 Version: 0.1.0
 Authors@R: 
     person("Heba", "Abdelrazzak", , "hebaarazzak@gmail.com", role = c("aut", "cre"))
 Description: Provides tools for retrieving and analyzing air quality data
-    from PurpleAir sensors through their API. Functions enable downloading
+    from 'PurpleAir' sensors through their API. Functions enable downloading
     historical measurements, accessing sensor metadata, and managing API
-    request limitations through chunked data retrieval.
+    request limitations through chunked data retrieval. For more information 
+    about the 'PurpleAir' API, see <https://api.purpleair.com/>.
 License: MIT + file LICENSE
+URL: https://github.com/heba-razzak/PurpleAirAPI
 Imports: 
     httr,
     jsonlite
